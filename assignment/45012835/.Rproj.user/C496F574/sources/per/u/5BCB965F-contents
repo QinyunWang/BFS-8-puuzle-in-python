@@ -1,0 +1,30 @@
+#1.1Extract data
+bcw<-read.table("breast-cancer-wisconsin.data",sep=',')
+
+#1.2Assign name to variables.
+names(bcw) <- c("Sample.code.number","Clump.Thickness","Uniformity.of.Cell.Size",
+                "Uniformity.of.Cell.Shape","Marginal.Adhesion","Single.Epithelial.Cell.Size",
+                "Bare.Nuclei","Bland.Chromatin","Normal.Nucleoli","Mitoses","Class")
+
+#1.3Remove Null
+bcw[complete.cases(bcw),]
+bcw$Bare.Nuclei <- as.integer(as.character(bcw$Bare.Nuclei))
+bcw1=na.omit(bcw)
+
+#1.4Remove the first column.
+bcw=bcw[,-1]
+
+#1.5Change type integer to factor.
+#see the type of Class
+class(bcw$Class)
+#"integer"
+#Change type integer to factor.
+bcw[,'Class']<-factor(bcw[,'Class'])
+#see the type of Class after changing
+class(bcw$Class)
+#"factor
+
+#1.6save as bcw_processed.Rda
+saveRDS(bcw1, file="bcw_processed.Rda")
+save(bcw1,file="./code/myPreparation.r")
+save(bcw1,file="./code/myPreparation.r")

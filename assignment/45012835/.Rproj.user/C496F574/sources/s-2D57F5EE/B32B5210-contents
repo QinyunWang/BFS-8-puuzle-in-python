@@ -1,0 +1,59 @@
+#3.1Load bcw_processed.Rda
+bcwtask3<-load("bcw_processed.Rda")
+
+#Divde dataset into "training" and "test"
+set.seed(2835)
+
+m = nrow(bcwtask3)
+training_percentage = 0.7
+test_percentage = 0.3
+
+#Sample random index
+ind <- sample(2,m,replace = TRUE, prob = c(training_percentage,test_percentage))
+
+#Select training and test data
+training_data = bcw1[ind == 1,]
+test_data = bcw1[ind == 2,]
+
+#divide features and labels
+training_features <- training_data[,1:9]
+training_labels <- training_data[,10]
+test_features <- test_data[,1:9]
+test_labels <- test_data[,10]
+
+#3.2
+# install and import "party" library
+install.packages("party")
+library(party)
+
+#Specify target(class) and predictors(features)
+myFormula <- Class ~ Clump.Thickness + Uniformity.of.Cell.Size + Uniformity.of.Cell.Shape +
+  Marginal.Adhesion + Single.Epithelial.Cell.Size + 
+  Bare.Nuclei + Bland.Chromatin + Normal.Nucleoli + Mitoses
+
+#generate classification tree
+bcwtask3_ctree <- ctree(myFormula,data=training_data)
+
+#visualise the tree
+plot(bcwtask3_ctree)
+
+#predict test labels
+ctree_pred<- predict(bcwtask3_ctree, training_data)
+
+#3.3
+
+#3.4 K-MN
+#install and import "class" library
+install.packages("class")
+library(class)
+
+#classify using K-MN
+knn_pred <- knn(train = training_features,
+                test = test_features,
+                cl = training_labels,
+                k=1)
+actual = c("Clump.Thickness","Uniformity.of.Cell.Size",
+           "Uniformity.of.Cell.Shape","Marginal.Adhesion","Single.Epithelial.Cell.Size",
+           "Bare.Nuclei","Bland.Chromatin","Normal.Nucleoli","Mitoses")
+predicted = actual
+cm = as.matrix(table(Actual = actual, predicted = ctree_pred))

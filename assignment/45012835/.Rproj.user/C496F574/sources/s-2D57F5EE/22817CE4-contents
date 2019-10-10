@@ -1,0 +1,56 @@
+#2.1Load bcw_processed.Rda
+bcw2<-load("bcw_processed.Rda")
+
+#Select first nine variables
+bcw3 <- bcw1[,1:9]
+#For reproducible result
+set.seed(2835)
+
+#2.2Cluster the data into 2 clusters
+nclust = 2
+bcw3 <- bcw1[,1:9]
+(kmeans.result <- kmeans(bcw3,nclust))
+#Plot
+plot(bcw1[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+     col = kmeans.result$cluster)
+title(paste("k= ",nclust,sep=""))
+#2.3
+bcw3 <- bcw[,1:9]
+nclust = 2
+(kmeans.result <- kmeans(bcw3,nclust))
+plot(bcw1[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+     col = kmeans.result$cluster)
+title(paste("k= ",nclust,sep=""))
+points(kmeans.result$centers[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+       col=1:nclust, pch = 2, cex = 4)
+
+#2.5
+#when k=3
+nclust = 3
+(kmeans.result <- kmeans(bcw3,nclust))
+#Plot
+plot(bcw1[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+     col = kmeans.result$cluster)
+title(paste("k= ",nclust,sep=""))
+points(kmeans.result$centers[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+       col= 1:nclust, pch = 2, cex = 4)
+
+#when k =4
+nclust = 4
+(kmeans.result <- kmeans(bcw3,nclust))
+#plot
+plot(bcw1[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+     col = kmeans.result$cluster)
+title(paste("k= ",nclust,sep=""))
+points(kmeans.result$centers[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+       col= 1:nclust, pch = 2, cex = 4)
+
+#when k =5
+nclust = 5
+(kmeans.result <- kmeans(bcw3,nclust))
+#plot
+plot(bcw1[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+     col = kmeans.result$cluster)
+title(paste("k= ",nclust,sep=""))
+points(kmeans.result$centers[,c("Clump.Thickness","Uniformity.of.Cell.Size")],
+       col= 1:, pch = 2, cex = 4)

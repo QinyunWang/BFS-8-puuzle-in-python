@@ -1,0 +1,18 @@
+#3.1Load bcw_processed.Rda
+bcwtask3<-load("bcw_processed.Rda")
+
+#Divde dataset into "training" and "test"
+set.seed(2835)
+
+m = nrow(bcwtask3)
+training_percentage = 0.7
+test_percentage = 0.3
+
+#Sample random index
+ind <- sample(2,m,replace = TRUE, prob = c(training_percentage,test_percentage))
+
+#Select training and test data
+training_data = bcw1[ind == 1,]
+test_data = bcw1[ind == 2,]
+
+

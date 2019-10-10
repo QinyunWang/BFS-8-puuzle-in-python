@@ -1,0 +1,27 @@
+#3.1Load bcw_processed.Rda
+bcwtask3<-load("bcw_processed.Rda")
+
+#Divde dataset into "training" and "test"
+set.seed(2835)
+
+m = nrow(bcwtask3)
+training_percentage = 0.7
+test_percentage = 0.3
+
+ind <- sample(2,m,replace = TRUE, prob = c(training_percentage,test_percentage))
+
+#Select training and test data
+training_data = bcw1[ind == 1,]
+test_data = bcw1[ind == 2,]
+
+install.packages("party")
+library(party)
+
+myFormula <- Class ~ Clump.Thickness + Uniformity.of.Cell.Size + Uniformity.of.Cell.Shape +
+  Marginal.Adhesion + Single.Epithelial.Cell.Size + 
+  Bare.Nuclei + Bland.Chromatin + Normal.Nucleoli + Mitoses
+
+bcwtask3_ctree <- ctree(myFormula,data=training_data)
+plot(bcwtask3_ctree)
+
+ctree_pred <- predict(bcwtask3_ctree, newdata = test_features)

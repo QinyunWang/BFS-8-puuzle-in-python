@@ -1,0 +1,32 @@
+#3.1Load bcw_processed.Rda
+bcwtask3<-load("bcw_processed.Rda")
+
+#Divde dataset into "training" and "test"
+set.seed(2835)
+
+#divide features and labels
+training_features <- trainData[,1:9]
+training_labels <- trainiData[,10]
+test_features <- testData[,1:9]
+test_labels <- testData[,10]
+
+ind < sample(2,nrow(bcw1),replace = TRUE,prob=c(0.7,0.3))
+trainData <- bcw1[ind==1,]
+testData <- bcw1[ind==2,]
+
+
+myFormula <- Class ~ Clump.Thickness + Uniformity.of.Cell.Size + Uniformity.of.Cell.Shape +
+  Marginal.Adhesion + Single.Epithelial.Cell.Size + 
+  Bare.Nuclei + Bland.Chromatin + Normal.Nucleoli + Mitoses
+
+bcw1_ctree <- ctree(myFormula, data=trainData)
+
+test_predict<- predict(bcw1_ctree,newdata=trainData)
+
+#classify using K-MN
+knn_pred <- knn(train = training_features,
+                test = test_features,
+                cl = training_labels,
+                k=1)
+
+cm = as.matrix(table(Actual = test_labels, Predicted = test_predict))
